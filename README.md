@@ -63,11 +63,14 @@ kubectl create -f mongo-controller.yaml
 # Run services to initiate connection
 
 - kubectl describe svc mongo
+
 - Kubectl describe svc full-stack
 
 # Get IP ADD | NODEPORT use  command below
-kubectl describe svc full-Stack
-minikube ip
+- kubectl describe svc full-Stack
+
+- minikube ip
+
 ```
 
 
