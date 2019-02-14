@@ -1,0 +1,20 @@
+
+npm install
+
+docker image build -t node-image .
+
+docker login
+
+docker image ls
+
+docker tag ecd64e5532dd jouman/node-image:full-stack
+
+docker push jouman/node-image
+
+kubectl create -f node-service.yaml
+
+kubectl create -f node-controller.yaml
+
+kubectl create -f mongo-service.yaml
+
+kubectl create -f mongo-controller.yaml

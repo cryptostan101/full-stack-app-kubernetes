@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: full-stack
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: full-stack
+    spec:
+      containers:
+      - name: full-stack
+        image: jouman/node-image:full-stack
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000

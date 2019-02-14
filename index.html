@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+
+
+    <title>Full Stack App</title>
+</head>
+<body>
+  <nav class="blue">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo center">A Full Stack Dockerize NodeJS APP </a>
+    </div>
+   </nav>
+
+   <div class="container">
+     <br>
+     <br>
+
+     <div class="row">
+         <div class="card-panel">
+           <div class="row">
+
+             <form method="post" action="/api/person" class="col s12">
+               <div class="row">
+                 <div class="input-field col s6">
+                   <input name="firstname" id="firstname" type="text" class="validate">
+                   <label for="firstname">First Name</label>
+                 </div>
+               </div>
+               <div class="row">
+                 <div class="input-field col s6">
+                   <input name="lastname" id="lastname" type="text" class="validate">
+                   <label for="lastname">Last Name</label>
+                 </div>
+               </div>
+               <div class="row">
+                  <div class="input-field col s6">
+                     <input name="age "id="age" type="tel" class="validate">
+                     <label for="age">Age</label>
+                   </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s6">
+                    <input name="gender" id="gender" type="text" class="validate">
+                    <label for="gender">Gender</label>
+                  </div>
+                </div>
+
+               <button class="btn waves-effect waves-light" type="submit" name="action" id='save'>Save</button>
+
+             </form>
+             <div class="row">
+               <div class="input-field col s12">
+                 <table class="striped mt-5">
+                  <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th></th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="person-list">
+
+                  </tbody>
+                </table>
+
+
+               </div>
+            </div>
+
+          </div>
+
+         </div>
+      </div>
+
+
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script>
+    $(document).ready(function () {
+      console.info('UI data');
+      const firstname = $("#firstname");
+      const lastname = $("#lastname");
+      const age = $("#age");
+      const gender = $("#gender");
+
+      const getFormData = () =>  {
+        const formData = {}
+        $('form > div.row').each( (i, element) => {
+          const key = $(element).find('label').attr('for').trim()
+          const value = $(element).find('input').val().trim()
+          formData[key] = value
+        })
+        return formData
+      }
+
+      const getList = () => {
+        axios({
+        method: 'GET',
+        url: '/api/person'
+      }).then( (persons) => {
+
+          displayList(persons)
+
+        }).catch( (error) =>{
+          console.log(error)
+        });
+
+      }
+
+      const clearFields = () => {
+          firstname.val('');
+          lastname.val('');
+          age.val('');
+          gender.val('');
+      }
+
+      const editEntry = (entry, entryID, editID) => {
+          let editBtn = $(`#${editID}`);
+          const URL = ("/api/person/edit/"+`${entry._id}`)
+          console.log(URL)
+          editBtn.click(() => {
+              axios({
+                  method : "PUT",
+                  headers : {
+                    "Content-Type" : "application/json"
+                  },
+                  url: URL,
+                  body : {
+                    "firstname" : `${entry.firstname}`
+                  }
+
+              }).then((data) => {
+                  if(data.ok == 1){
+                      let entryIndex = $(`#${entryID}`);
+                      entryIndex.html(data.value.entry);
+                      clearFields();
+                  }
+              }).catch( (error) => {
+                console.log(error)
+              });
+          });
+      }
+
+      const deleteEntry = (entry, listItemID, deleteID) => {
+          let deleteBtn = $(`#${deleteID}`);
+          const URL = ("/api/person/"+`${entry._id}`)
+          deleteBtn.click(() => {
+              axios({
+                  method: 'DELETE',
+                  url: URL
+              }).then((data) => {
+                  if(data.ok == 1){
+                      $(`#${listItemID}`).remove();
+                      clearFields();
+                      window.location.replace('/');
+                  }
+              }).catch( (error) => {
+                console.log(error)
+              });
+          });
+      }
+
+      const buildIDS = (entry) => {
+          return {
+              editID : "edit_" + entry._id,
+              deleteID : "delete_" + entry._id,
+              listItemID : "listItem_" + entry._id,
+              entryID : "enty" + entry._id
+          }
+      }
+
+      const createLayout = (entry, ids) => {
+        const list = document.querySelector('#person-list');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${entry.firstname}</td>
+          <td>${entry.lastname}</td>
+          <td>${entry.age}</td>
+          <td>${entry.gender}</td>
+          <td><button type="button" class="btn btn-danger btn-sm delete"  id="${ids.deleteID}" >X</button></td>
+          <td><button type="button" class="btn waves-effect waves-light orange" id="${ids.editID}">Edit</button></td>
+        `;
+
+        list.appendChild(row);
+      }
+
+     const displayList = (persons) => {
+        const listArr = persons.data.persons;
+          listArr.forEach((entry) => {
+              console.log(entry.firstname);
+              let ids = buildIDS(entry);
+              createLayout(entry,ids);
+              editEntry(entry,ids.entryID,ids.editID);
+              deleteEntry(entry,ids.listItemID,ids.deleteID);
+          });
+      }
+
+      const saveEvent = (event) => {
+        event.preventDefault();
+        const formData = getFormData();
+
+        console.log(formData);
+        axios.post('/api/person', formData)
+        .then( (person) => {
+            console.log(person)
+            window.location.replace('/');
+        })
+        .catch( (error) => {
+          console.log(error)
+        });
+
+      }
+
+
+      getList();
+      $('button#save').on('click', saveEvent);
+
+    })
+
+
+
+    </script>
+
+
+
+</body>
+</html>

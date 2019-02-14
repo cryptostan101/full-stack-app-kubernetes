@@ -1,0 +1,38 @@
+{
+  "name": "full-stack-app-kubernetes",
+  "version": "1.0.0",
+  "description": "A Node.js/Express application that responds to several routes and communicates with MongoDB to save and retrieve some information (e.g. a person)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "lint": "eslint ./",
+    "test": "mocha --exit"
+  },
+  "keywords": [
+    "Docker",
+    "Kubernetes",
+    "Helm Chart",
+    "NodeJS",
+    "Express",
+    "MongoDB",
+    "Mocha & Chai",
+    "Eslint",
+    "Nodemon",
+    "TravisCI"
+  ],
+  "author": "Johnson Uman",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.10"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "eslint": "^5.13.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.10"
+  }
+}
