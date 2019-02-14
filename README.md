@@ -81,5 +81,5 @@ http://MINIKUBE_IP_ADDRESS:30061
 ## Run ESLint
 npm run lint
 
-## Run test
+## Run API test
 npm run test
