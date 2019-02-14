@@ -45,8 +45,9 @@ docker image build -t node-image .
 # Docker login with credentials
 docker login
 
+# To get image ID use command - `docker image ls`
 # Create a tag for docker image
-docker tag ID <DOCKER_USERNAME>/node-image:full-stack
+docker tag <IMAGE_ID> <DOCKER_USERNAME>/node-image:full-stack
 
 # Docker push
 docker push <DOCKER_USERNAME>/node-image
@@ -78,8 +79,8 @@ kubectl create -f mongo-controller.yaml
 http://MINIKUBE_IP_ADDRESS:30061
 
 
-## Run ESLint
+## Run ESLint Locally
 npm run lint
 
-## Run API test
+## Run API test Locally
 npm run test
