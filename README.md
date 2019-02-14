@@ -1,6 +1,6 @@
 # A Full Stack Dockerize NodeJS
 
-[![Build Status](https://travis-ci.org/cryptostan101/full-stack-app.svg?branch=master)](https://travis-ci.org/cryptostan101/full-stack-app)
+[![Build Status](https://travis-ci.org/cryptostan101/full-stack-app-kubernetes.svg?branch=master)](https://travis-ci.org/cryptostan101/full-stack-app-kubernetes)
 
 Write a basic Node.js/Express application that responds to several routes and communicates with MongoDB or SQLite to save and retrieve some information (e.g. a person, a pet, a car, you choose)
 
