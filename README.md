@@ -50,7 +50,7 @@ docker login
 docker tag <IMAGE_ID> <DOCKER_USERNAME>/node-image:full-stack
 
 # Docker push
-docker push <DOCKER_USERNAME>/node-image
+docker push <DOCKER_USERNAME>/node-image:full-stack
 
 # Create service and pod for NodeJS and MongoDB
 kubectl create -f node-service.yaml
